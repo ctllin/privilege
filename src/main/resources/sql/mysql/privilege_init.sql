@@ -10,11 +10,10 @@ Target Server Type    : MYSQL
 Target Server Version : 50505
 File Encoding         : 65001
 
-Date: 2018-05-10 15:06:55
+Date: 2018-05-10 15:43:59
 */
 
 SET FOREIGN_KEY_CHECKS=0;
-
 
 -- ----------------------------
 -- Table structure for sys_data_dictionary
@@ -130,7 +129,7 @@ CREATE TABLE `sys_resource` (
   `hasChild` int(4) DEFAULT NULL COMMENT '默认0没有，1有',
   `createdatetime` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=452 DEFAULT CHARSET=utf8 COMMENT='资源';
+) ENGINE=MyISAM AUTO_INCREMENT=453 DEFAULT CHARSET=utf8 COMMENT='资源';
 
 -- ----------------------------
 -- Records of sys_resource
@@ -207,6 +206,7 @@ INSERT INTO `sys_role_resource` VALUES ('1', '11');
 INSERT INTO `sys_role_resource` VALUES ('1', '12');
 INSERT INTO `sys_role_resource` VALUES ('1', '13');
 INSERT INTO `sys_role_resource` VALUES ('1', '14');
+INSERT INTO `sys_role_resource` VALUES ('1', '21');
 INSERT INTO `sys_role_resource` VALUES ('1', '22');
 INSERT INTO `sys_role_resource` VALUES ('1', '111');
 INSERT INTO `sys_role_resource` VALUES ('1', '112');
@@ -227,10 +227,11 @@ INSERT INTO `sys_role_resource` VALUES ('1', '142');
 INSERT INTO `sys_role_resource` VALUES ('1', '143');
 INSERT INTO `sys_role_resource` VALUES ('1', '144');
 INSERT INTO `sys_role_resource` VALUES ('1', '145');
-INSERT INTO `sys_role_resource` VALUES ('1', '259');
-INSERT INTO `sys_role_resource` VALUES ('1', '390');
-INSERT INTO `sys_role_resource` VALUES ('1', '449');
-INSERT INTO `sys_role_resource` VALUES ('1', '450');
+INSERT INTO `sys_role_resource` VALUES ('1', '211');
+INSERT INTO `sys_role_resource` VALUES ('1', '212');
+INSERT INTO `sys_role_resource` VALUES ('1', '213');
+INSERT INTO `sys_role_resource` VALUES ('1', '214');
+INSERT INTO `sys_role_resource` VALUES ('1', '215');
 
 -- ----------------------------
 -- Table structure for sys_user
@@ -278,4 +279,4 @@ INSERT INTO `sys_user_role` VALUES ('1', '1');
 -- View structure for view_sys_user
 -- ----------------------------
 DROP VIEW IF EXISTS `view_sys_user`;
-CREATE ALGORITHM=UNDEFINED DEFINER=`ctl`@`%` SQL SECURITY DEFINER VIEW `view_sys_user` AS select `su`.`id` AS `id`,`su`.`loginname` AS `loginname`,`su`.`name` AS `name`,`su`.`password` AS `password`,`su`.`customer_id` AS `customer_id`,`su`.`sex` AS `sex`,`su`.`age` AS `age`,`su`.`usertype` AS `usertype`,`su`.`isdefault` AS `isdefault`,`su`.`state` AS `state`,`su`.`organization_id` AS `organization_id`,`su`.`createdatetime` AS `createdatetime`,`su`.`phone` AS `phone`,`su`.`airCompany` AS `airCompany`,`su`.`supplier_id` AS `supplier_id`,`so`.`name` AS `organizationName` from (`sys_user` `su` left join `sys_organization` `so` on(`su`.`organization_id` = `so`.`id`)) ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`ctl`@`%` SQL SECURITY DEFINER VIEW `view_sys_user` AS select `su`.`id` AS `id`,`su`.`loginname` AS `loginname`,`su`.`name` AS `name`,`su`.`password` AS `password`,`su`.`customer_id` AS `customer_id`,`su`.`sex` AS `sex`,`su`.`age` AS `age`,`su`.`usertype` AS `usertype`,`su`.`isdefault` AS `isdefault`,`su`.`state` AS `state`,`su`.`organization_id` AS `organization_id`,`su`.`createdatetime` AS `createdatetime`,`su`.`phone` AS `phone`,`so`.`name` AS `organizationName` from (`sys_user` `su` left join `sys_organization` `so` on(`su`.`organization_id` = `so`.`id`)) ;
