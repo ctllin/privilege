@@ -2,14 +2,14 @@
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" id="WebApp_ID" version="2.5">
 
 	<!-- 项目名称 -->
-	<display-name>manager</display-name>
+	<display-name>pmanager</display-name>
    <!-- 
   	 	Tomcat发布多个项目时抛的webAppRootKey错误,  原因是部署在同一容器中的Web项目，定义了相同的webAppRootKey或者都没有定义
     	解决办法：需要为每个web都定义一个webAppRootKey
    -->
     <context-param>  
         <param-name>webAppRootKey</param-name>   
-        <param-value>manager</param-value>
+        <param-value>pmanager</param-value>
     </context-param> 
 	<!-- 指定spring相关文件的位置 -->
 	<context-param>
@@ -55,7 +55,7 @@
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
 		<init-param>
 			<param-name>contextConfigLocation</param-name>
-			<param-value>/WEB-INF/classes/spring/spring-mvc.xml</param-value>
+			<param-value>classpath*:/spring/spring-mvc.xml</param-value>
 		</init-param>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
