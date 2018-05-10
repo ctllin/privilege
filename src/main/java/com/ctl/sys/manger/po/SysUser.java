@@ -31,10 +31,6 @@ public class SysUser {
 
     private String phone;
 
-    private String airCompany;
-
-    private Integer supplier_id;
-    
     private String organizationName;
     
     public Integer getId() {
@@ -140,22 +136,6 @@ public class SysUser {
 
     public void setPhone(String phone) {
         this.phone = phone == null ? null : phone.trim();
-    }
-
-    public String getAirCompany() {
-        return airCompany;
-    }
-
-    public void setAirCompany(String airCompany) {
-        this.airCompany = airCompany == null ? null : airCompany.trim();
-    }
-
-    public Integer getSupplier_id() {
-        return supplier_id;
-    }
-
-    public void setSupplier_id(Integer supplier_id) {
-        this.supplier_id = supplier_id;
     }
 
 	public String getOrganizationName() {

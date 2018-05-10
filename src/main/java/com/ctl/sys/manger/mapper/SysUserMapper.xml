@@ -16,8 +16,7 @@
     <result column="createdatetime" jdbcType="TIMESTAMP" property="createdatetime" />
     <result column="phone" jdbcType="VARCHAR" property="phone" />
     <result column="organizationName" jdbcType="VARCHAR" property="organizationName" />
-    <result column="airCompany" jdbcType="VARCHAR" property="airCompany" />
-    <result column="supplier_id" jdbcType="INTEGER" property="supplier_id" />
+
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -79,7 +78,7 @@
   </sql>
   <sql id="Base_Column_List">
     id, loginname, name, password, customer_id, sex, age, usertype, isdefault, state, 
-    organization_id, createdatetime, phone, airCompany, supplier_id,organizationName
+    organization_id, createdatetime, phone,organizationName
   </sql>
   <select id="selectByExample" parameterType="com.ctl.sys.manger.po.SysUserExample" resultMap="BaseResultMap">
     select
@@ -164,13 +163,13 @@
       password, customer_id, sex, 
       age, usertype, isdefault, 
       state, organization_id, createdatetime, 
-      phone, airCompany, supplier_id
+      phone
       )
     values (#{id,jdbcType=INTEGER}, #{loginname,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
       #{password,jdbcType=VARCHAR}, #{customer_id,jdbcType=INTEGER}, #{sex,jdbcType=INTEGER}, 
       #{age,jdbcType=INTEGER}, #{usertype,jdbcType=INTEGER}, #{isdefault,jdbcType=INTEGER}, 
       #{state,jdbcType=INTEGER}, #{organization_id,jdbcType=INTEGER}, #{createdatetime,jdbcType=TIMESTAMP}, 
-      #{phone,jdbcType=VARCHAR}, #{airCompany,jdbcType=VARCHAR}, #{supplier_id,jdbcType=INTEGER}
+      #{phone,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.ctl.sys.manger.po.SysUser" useGeneratedKeys="true" keyProperty="id">
@@ -215,12 +214,6 @@
       <if test="phone != null">
         phone,
       </if>
-      <if test="airCompany != null">
-        airCompany,
-      </if>
-      <if test="supplier_id != null">
-        supplier_id,
-      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -261,12 +254,6 @@
       </if>
       <if test="phone != null">
         #{phone,jdbcType=VARCHAR},
-      </if>
-      <if test="airCompany != null">
-        #{airCompany,jdbcType=VARCHAR},
-      </if>
-      <if test="supplier_id != null">
-        #{supplier_id,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -318,12 +305,6 @@
       <if test="record.phone != null">
         phone = #{record.phone,jdbcType=VARCHAR},
       </if>
-      <if test="record.airCompany != null">
-        airCompany = #{record.airCompany,jdbcType=VARCHAR},
-      </if>
-      <if test="record.supplier_id != null">
-        supplier_id = #{record.supplier_id,jdbcType=INTEGER},
-      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -343,9 +324,7 @@
       state = #{record.state,jdbcType=INTEGER},
       organization_id = #{record.organization_id,jdbcType=INTEGER},
       createdatetime = #{record.createdatetime,jdbcType=TIMESTAMP},
-      phone = #{record.phone,jdbcType=VARCHAR},
-      airCompany = #{record.airCompany,jdbcType=VARCHAR},
-      supplier_id = #{record.supplier_id,jdbcType=INTEGER}
+      phone = #{record.phone,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -389,12 +368,6 @@
       <if test="phone != null">
         phone = #{phone,jdbcType=VARCHAR},
       </if>
-      <if test="airCompany != null">
-        airCompany = #{airCompany,jdbcType=VARCHAR},
-      </if>
-      <if test="supplier_id != null">
-        supplier_id = #{supplier_id,jdbcType=INTEGER},
-      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -411,9 +384,7 @@
       state = #{state,jdbcType=INTEGER},
       organization_id = #{organization_id,jdbcType=INTEGER},
       createdatetime = #{createdatetime,jdbcType=TIMESTAMP},
-      phone = #{phone,jdbcType=VARCHAR},
-      airCompany = #{airCompany,jdbcType=VARCHAR},
-      supplier_id = #{supplier_id,jdbcType=INTEGER}
+      phone = #{phone,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>
