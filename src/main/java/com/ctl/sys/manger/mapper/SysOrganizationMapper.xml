@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ctl.sys.manger.mapper.SysOrganizationMapper">
+  <resultMap id="BaseResultMap" type="com.ctl.sys.manger.po.SysOrganization">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="code" jdbcType="VARCHAR" property="code" />
+    <result column="icon" jdbcType="VARCHAR" property="icon" />
+    <result column="pid" jdbcType="INTEGER" property="pid" />
+    <result column="seq" jdbcType="INTEGER" property="seq" />
+    <result column="isdefault" jdbcType="INTEGER" property="isdefault" />
+    <result column="createdatetime" jdbcType="TIMESTAMP" property="createdatetime" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, name, address, code, icon, pid, seq, isdefault, createdatetime
+  </sql>
+  <select id="selectByExample" parameterType="com.ctl.sys.manger.po.SysOrganizationExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from sys_organization
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sys_organization
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectIdByPid" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+    select id from sys_organization  where pid = #{id,jdbcType=INTEGER}
+  </select>
+  
+  <select id="treeGrid"   parameterType="map" resultType="com.ctl.sys.manger.pageModel.sys.Organization">
+	SELECT
+		so1.id,
+		so1.name,
+		so1.address,
+		so1.code,
+		so1.icon,
+		so1.icon AS iconCls,
+		so1.pid,
+		so1.seq,
+		so1.isdefault,
+		so1.createdatetime,
+		so2. NAME AS pname
+	FROM
+		sys_organization so1
+	LEFT JOIN sys_organization so2 ON so1.pid = so2.id where 1=1
+	 <if test="id != null and id !='' ">
+           and so1.id=#{id,jdbcType=INTEGER}
+     </if>
+	ORDER BY
+		so1.seq
+  </select>
+
+  
+  <select id="organizationUnionUserNum"   parameterType="map" resultType="java.lang.Integer">
+		SELECT count(su.id) FROM sys_user su LEFT JOIN sys_organization so ON su.organization_id = so.id WHERE 1=1
+	 <if test="id != null and id !='' ">
+           and so.id=#{id,jdbcType=INTEGER}
+     </if>
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from sys_organization
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ctl.sys.manger.po.SysOrganizationExample">
+    delete from sys_organization
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ctl.sys.manger.po.SysOrganization">
+    insert into sys_organization (id, name, address, 
+      code, icon, pid, seq, 
+      isdefault, createdatetime)
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, 
+      #{code,jdbcType=VARCHAR}, #{icon,jdbcType=VARCHAR}, #{pid,jdbcType=INTEGER}, #{seq,jdbcType=INTEGER}, 
+      #{isdefault,jdbcType=INTEGER}, #{createdatetime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ctl.sys.manger.po.SysOrganization">
+    insert into sys_organization
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="address != null">
+        address,
+      </if>
+      <if test="code != null">
+        code,
+      </if>
+      <if test="icon != null">
+        icon,
+      </if>
+      <if test="pid != null">
+        pid,
+      </if>
+      <if test="seq != null">
+        seq,
+      </if>
+      <if test="isdefault != null">
+        isdefault,
+      </if>
+      <if test="createdatetime != null">
+        createdatetime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null">
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="icon != null">
+        #{icon,jdbcType=VARCHAR},
+      </if>
+      <if test="pid != null">
+        #{pid,jdbcType=INTEGER},
+      </if>
+      <if test="seq != null">
+        #{seq,jdbcType=INTEGER},
+      </if>
+      <if test="isdefault != null">
+        #{isdefault,jdbcType=INTEGER},
+      </if>
+      <if test="createdatetime != null">
+        #{createdatetime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ctl.sys.manger.po.SysOrganizationExample" resultType="java.lang.Long">
+    select count(*) from sys_organization
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update sys_organization
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.name != null">
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.address != null">
+        address = #{record.address,jdbcType=VARCHAR},
+      </if>
+      <if test="record.code != null">
+        code = #{record.code,jdbcType=VARCHAR},
+      </if>
+      <if test="record.icon != null">
+        icon = #{record.icon,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pid != null">
+        pid = #{record.pid,jdbcType=INTEGER},
+      </if>
+      <if test="record.seq != null">
+        seq = #{record.seq,jdbcType=INTEGER},
+      </if>
+      <if test="record.isdefault != null">
+        isdefault = #{record.isdefault,jdbcType=INTEGER},
+      </if>
+      <if test="record.createdatetime != null">
+        createdatetime = #{record.createdatetime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update sys_organization
+    set id = #{record.id,jdbcType=INTEGER},
+      name = #{record.name,jdbcType=VARCHAR},
+      address = #{record.address,jdbcType=VARCHAR},
+      code = #{record.code,jdbcType=VARCHAR},
+      icon = #{record.icon,jdbcType=VARCHAR},
+      pid = #{record.pid,jdbcType=INTEGER},
+      seq = #{record.seq,jdbcType=INTEGER},
+      isdefault = #{record.isdefault,jdbcType=INTEGER},
+      createdatetime = #{record.createdatetime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ctl.sys.manger.po.SysOrganization">
+    update sys_organization
+    <set>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null">
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="icon != null">
+        icon = #{icon,jdbcType=VARCHAR},
+      </if>
+      <if test="pid != null">
+        pid = #{pid,jdbcType=INTEGER},
+      </if>
+      <if test="seq != null">
+        seq = #{seq,jdbcType=INTEGER},
+      </if>
+      <if test="isdefault != null">
+        isdefault = #{isdefault,jdbcType=INTEGER},
+      </if>
+      <if test="createdatetime != null">
+        createdatetime = #{createdatetime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ctl.sys.manger.po.SysOrganization">
+    update sys_organization
+    set name = #{name,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      code = #{code,jdbcType=VARCHAR},
+      icon = #{icon,jdbcType=VARCHAR},
+      pid = #{pid,jdbcType=INTEGER},
+      seq = #{seq,jdbcType=INTEGER},
+      isdefault = #{isdefault,jdbcType=INTEGER},
+      createdatetime = #{createdatetime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

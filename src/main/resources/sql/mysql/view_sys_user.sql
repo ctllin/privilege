@@ -1,0 +1,1 @@
+create view view_sys_user as select su.*,so.`name` as organizationName from sys_user su LEFT JOIN sys_organization so on su.organization_id=so.id

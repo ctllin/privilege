@@ -1,0 +1,24 @@
+#根据json 生成javabean
+http://www.bejson.com/json2javapojo/  
+#支付宝api列表
+https://doc.open.alipay.com/docs/doc.htm?spm=a219a.7629140.0.0.3NcT4v&treeId=193&articleId=105900&docType=1
+https://github.com/kaola-thirdpart/netease-kaola-thirdpart/wiki
+https://github.com/kaola-thirdpart/netease-kaola-thirdpart/tree/master/test%E7%A4%BA%E4%BE%8B/src/test/java/com/netease/haitao/thirdpart/newtest
+#微信支付api地址
+https://pay.weixin.qq.com/wiki/doc/api/native.php?chapter=9_1
+
+
+101.200.162.214 
+1、svn   已经已经迁出到本地
+2、数据库已经同步到216 并导出到本地
+
+101.200.229.38
+1、datadir目录同步      已经同步
+2、数据库	已经导出到本地
+3、m.xilehagn.cn 对应项目 
+spoon中的spoon/Templates/Config/configsql.txt  数据库配置文件要改
+表sys_execute_sh  sh执行脚本路径  /home/666shareco/apachePaymanager20083/paymanager/spoon/syncBocDataToMysql.sh
+4、apk.xilehang.cn迁移  要看文件是否可以下载 
+5、微信配置ip地址需要修改（lightmanger/paymanager），搜狐配置的ip需要修改（AlipayWithoutMessage），支付宝需要将ip通知支付宝服务商
+6、 svn
+7、nginx 需要确定每个请求都能接收到、默认会拒绝掉部分请求

@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" id="WebApp_ID" version="2.5">
+
+	<!-- 项目名称 -->
+	<display-name>manager</display-name>
+   <!-- 
+  	 	Tomcat发布多个项目时抛的webAppRootKey错误,  原因是部署在同一容器中的Web项目，定义了相同的webAppRootKey或者都没有定义
+    	解决办法：需要为每个web都定义一个webAppRootKey
+   -->
+    <context-param>  
+        <param-name>webAppRootKey</param-name>   
+        <param-value>manager</param-value>
+    </context-param> 
+	<!-- 指定spring相关文件的位置 -->
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<!-- <param-value>classpath:spring/spring.xml,classpath:spring/spring-ehcache.xml,classpath:spring/spring-hibernate.xml,classpath:spring/spring-tasks.xml</param-value> -->
+		<param-value>classpath:spring/spring-mybatis.xml</param-value>
+	</context-param>
+	
+	<context-param>
+		<param-name>logbackConfigLocation</param-name>
+		<param-value>classpath:logback.xml</param-value>
+	</context-param>
+	<listener>
+		<listener-class>ch.qos.logback.ext.spring.web.LogbackConfigListener</listener-class>
+	</listener>
+	<!-- 配置字符集过滤器 -->
+	<filter>
+		<filter-name>encodingFilter</filter-name>
+		<filter-class>com.ctl.sys.manger.framework.filter.EXTCharacterEncodingFilter</filter-class>
+		<!-- <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class> -->
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>UTF-8</param-value>
+		</init-param>
+	</filter>
+	<!-- 配置项目的编码mapping -->
+	<filter-mapping>
+		<filter-name>encodingFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	<!-- 开启spring功能 -->
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+	<!-- 防止内存溢出监听器 -->
+	<listener>
+		<listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>
+	</listener>
+
+	<!-- 配置spring mvc -->
+	<servlet>
+		<servlet-name>springMvc</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>/WEB-INF/classes/spring/spring-mvc.xml</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<!-- 配置tomcat 初始化数据 -->
+	<!--<servlet>-->
+		<!--<description>Tomcat启动时执行数据初始化</description>-->
+		<!--<display-name>Tomcat启动时执行数据初始化</display-name>-->
+		<!--<servlet-name>InitDataServlet</servlet-name>-->
+		<!--<servlet-class>com.xilehang.common.controller.InitDataServlet</servlet-class>-->
+		<!--<load-on-startup>2</load-on-startup>-->
+  	<!--</servlet>-->
+	<!--<servlet-mapping>-->
+	    <!--<servlet-name>InitDataServlet</servlet-name>-->
+	    <!--<url-pattern>/sys/InitDataServlet</url-pattern>-->
+	<!--</servlet-mapping>-->
+	<!-- 配置spring mvc mapping -->
+	<servlet-mapping>
+		<servlet-name>springMvc</servlet-name>
+		<url-pattern>/</url-pattern>
+	</servlet-mapping>
+	<jsp-config>
+    <taglib>
+        <taglib-uri>/mytaglib</taglib-uri>
+        <taglib-location>/WEB-INF/tld/statusTran.tld</taglib-location>
+    </taglib>
+
+  </jsp-config>
+
+	
+	<!-- cxf WebService服务 
+	<servlet>
+		<servlet-name>cxfService</servlet-name>
+		<servlet-class>org.apache.cxf.transport.servlet.CXFServlet</servlet-class>
+	</servlet>
+  <servlet>
+    <description>Tomcat启动时执行数据初始化</description>
+    <display-name>Tomcat启动时执行数据初始化</display-name>
+    <servlet-name>InitDataServlet</servlet-name>
+    <servlet-class>com.ctl.sys.manger.servlet.InitDataServlet</servlet-class>
+  </servlet>
+
+	<servlet-mapping>
+		<servlet-name>cxfService</servlet-name>
+		<url-pattern>/ws/*</url-pattern>
+	</servlet-mapping>-->
+	
+	<!-- 配置静态资源不经过spring mvc -->
+	<servlet-mapping>
+		<servlet-name>default</servlet-name>
+		<url-pattern>*.css</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>default</servlet-name>
+		<url-pattern>*.js</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>default</servlet-name>
+		<url-pattern>*.json</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>default</servlet-name>
+		<url-pattern>*.gif</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>default</servlet-name>
+		<url-pattern>*.png</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>default</servlet-name>
+		<url-pattern>*.jpg</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>default</servlet-name>
+		<url-pattern>*.ico</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>default</servlet-name>
+		<url-pattern>*.doc</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>default</servlet-name>
+		<url-pattern>*.xls</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>default</servlet-name>
+		<url-pattern>*.docx</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>default</servlet-name>
+		<url-pattern>*.xlsx</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>default</servlet-name>
+		<url-pattern>*.zip</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>default</servlet-name>
+		<url-pattern>*.txt</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>default</servlet-name>
+		<url-pattern>*.swf</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>default</servlet-name>
+		<url-pattern>*.ocx</url-pattern>
+	</servlet-mapping>
+		<servlet-mapping>
+		<servlet-name>default</servlet-name>
+		<url-pattern>*.cab</url-pattern>
+	</servlet-mapping>
+	<!-- 配置session超时时间，单位分钟 -->
+	<session-config>
+		<session-timeout>150</session-timeout>
+	</session-config>
+
+	<!-- 设置欢迎页面 -->
+	<welcome-file-list>
+		<welcome-file>/index.jsp</welcome-file>
+	</welcome-file-list>
+
+	<!-- 找不到页错误转向 -->
+	<error-page>
+		<error-code>400</error-code>
+		<location>/error/400.jsp</location>
+	</error-page>
+	<error-page>
+		<error-code>404</error-code>
+		<location>/error/404.jsp</location>
+	</error-page>
+	<!-- 系统内部错误转向 -->
+	<error-page>
+		<error-code>500</error-code>
+		<location>/error/500.jsp</location>
+	</error-page>
+
+</web-app>

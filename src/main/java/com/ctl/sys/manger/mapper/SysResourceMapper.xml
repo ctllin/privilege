@@ -1,0 +1,412 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ctl.sys.manger.mapper.SysResourceMapper">
+  <resultMap id="BaseResultMap" type="com.ctl.sys.manger.po.SysResource">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="url" jdbcType="VARCHAR" property="url" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="icon" jdbcType="VARCHAR" property="icon" />
+    <result column="pid" jdbcType="INTEGER" property="pid" />
+    <result column="seq" jdbcType="INTEGER" property="seq" />
+    <result column="state" jdbcType="INTEGER" property="state" />
+    <result column="resourcetype" jdbcType="INTEGER" property="resourcetype" />
+    <result column="isdefault" jdbcType="INTEGER" property="isdefault" />
+    <result column="hasChild" jdbcType="INTEGER" property="hasChild" />
+    <result column="createdatetime" jdbcType="TIMESTAMP" property="createdatetime" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, name, url, description, icon, pid, seq, state, resourcetype, isdefault, hasChild, 
+    createdatetime
+  </sql>
+  <select id="selectByExample" parameterType="com.ctl.sys.manger.po.SysResourceExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from sys_resource
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sys_resource
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectUrl" resultType="java.lang.String">
+     select distinct url   from sys_resource where url is not null and url&lt;&gt;'' and state=0  <!-- state=0 启用状态-->
+  </select>
+  
+  <select id="treeGrid"  parameterType="map" resultType="com.ctl.sys.manger.pageModel.sys.Resource">
+		   SELECT
+			distinct  sr0.id,
+			sr0.name,
+			sr0.url,
+			sr0.description,
+			sr0.icon,
+			sr0.icon AS iconCls,
+			sr0.pid,
+			sr0.seq,
+			sr0.state,
+			sr0.state AS cstate,
+			sr0.resourcetype,
+			sr0.isdefault,
+			sr0.hasChild,
+			sr0.createdatetime,
+			sr2.name as pname
+		FROM
+			sys_resource sr0  LEFT JOIN sys_resource sr2
+            on sr0.pid=sr2.id where 1=1 <!-- sr0.state=0 启用状态-->
+	  <if test="resourcetype != null and resourcetype!=''">
+        and sr0.resourcetype = #{resourcetype,jdbcType=INTEGER}
+      </if>
+       <if test="id != null and id!=''">
+         and sr0.id = #{id,jdbcType=INTEGER}
+      </if>
+		ORDER BY
+			sr0.seq
+  </select>
+  
+   <select id="setTreeByPrivilege" parameterType="map" resultType="com.ctl.sys.manger.pageModel.sys.Resource">
+    select
+            distinct sr0.id ,
+            trole2_.id ,
+            sr0.createdatetime  ,
+            sr0.description  ,
+            sr0.icon  ,
+            sr0.isdefault ,
+            sr0.name ,
+            sr0.pid ,
+            sr0.resourcetype ,
+            sr0.seq ,
+            sr0.state ,
+	        sr0.hasChild,
+            sr0.url <!-- , -->
+           <!--  trole2_.description ,
+            trole2_.isdefault ,
+            trole2_.name ,
+            trole2_.seq ,
+            srr0.resource_id ,
+            srr0.role_id   -->
+        from
+            sys_resource sr0 
+        inner join
+            sys_role_resource srr0 
+                on sr0.id=srr0.resource_id 
+        inner join
+            sys_role trole2_ 
+                on srr0.role_id=trole2_.id 
+        inner join
+            sys_user_role sur0 
+                on trole2_.id=sur0.role_id 
+        inner join
+            sys_user su0 
+                on sur0.user_id=su0.id 
+        where
+            sr0.resourcetype=#{resourcetype,jdbcType=INTEGER} 
+            and su0.id= #{userId,jdbcType=INTEGER} 
+            <!-- and sr0.state=0 启用状态-->
+        order by
+            sr0.seq,
+            trole2_.id asc
+  </select>
+  
+  <select id="selectIdByPid" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+    select id from sys_resource  where pid = #{id,jdbcType=INTEGER}
+  </select>
+  
+  <select id="resourceUnionRoleNum"   parameterType="map" resultType="java.lang.Integer">
+	SELECT count(sr.id) FROM sys_role_resource srr LEFT JOIN sys_resource sr  ON sr.id = srr.resource_id WHERE 1 = 1
+	 <if test="id != null and id !='' ">
+           and sr.id=#{id,jdbcType=INTEGER}
+     </if>
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from sys_resource
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ctl.sys.manger.po.SysResourceExample">
+    delete from sys_resource
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ctl.sys.manger.po.SysResource">
+    insert into sys_resource (id, name, url, 
+      description, icon, pid, 
+      seq, state, resourcetype, 
+      isdefault, hasChild, createdatetime
+      )
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, 
+      #{description,jdbcType=VARCHAR}, #{icon,jdbcType=VARCHAR}, #{pid,jdbcType=INTEGER}, 
+      #{seq,jdbcType=INTEGER}, #{state,jdbcType=INTEGER}, #{resourcetype,jdbcType=INTEGER}, 
+      #{isdefault,jdbcType=INTEGER}, #{hasChild,jdbcType=INTEGER}, #{createdatetime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.ctl.sys.manger.po.SysResource">
+    insert into sys_resource
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="url != null">
+        url,
+      </if>
+      <if test="description != null">
+        description,
+      </if>
+      <if test="icon != null">
+        icon,
+      </if>
+      <if test="pid != null">
+        pid,
+      </if>
+      <if test="seq != null">
+        seq,
+      </if>
+      <if test="state != null">
+        state,
+      </if>
+      <if test="resourcetype != null">
+        resourcetype,
+      </if>
+      <if test="isdefault != null">
+        isdefault,
+      </if>
+      <if test="hasChild != null">
+        hasChild,
+      </if>
+      <if test="createdatetime != null">
+        createdatetime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null">
+        #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="icon != null">
+        #{icon,jdbcType=VARCHAR},
+      </if>
+      <if test="pid != null">
+        #{pid,jdbcType=INTEGER},
+      </if>
+      <if test="seq != null">
+        #{seq,jdbcType=INTEGER},
+      </if>
+      <if test="state != null">
+        #{state,jdbcType=INTEGER},
+      </if>
+      <if test="resourcetype != null">
+        #{resourcetype,jdbcType=INTEGER},
+      </if>
+      <if test="isdefault != null">
+        #{isdefault,jdbcType=INTEGER},
+      </if>
+      <if test="hasChild != null">
+        #{hasChild,jdbcType=INTEGER},
+      </if>
+      <if test="createdatetime != null">
+        #{createdatetime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ctl.sys.manger.po.SysResourceExample" resultType="java.lang.Long">
+    select count(*) from sys_resource
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update sys_resource
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.name != null">
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.url != null">
+        url = #{record.url,jdbcType=VARCHAR},
+      </if>
+      <if test="record.description != null">
+        description = #{record.description,jdbcType=VARCHAR},
+      </if>
+      <if test="record.icon != null">
+        icon = #{record.icon,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pid != null">
+        pid = #{record.pid,jdbcType=INTEGER},
+      </if>
+      <if test="record.seq != null">
+        seq = #{record.seq,jdbcType=INTEGER},
+      </if>
+      <if test="record.state != null">
+        state = #{record.state,jdbcType=INTEGER},
+      </if>
+      <if test="record.resourcetype != null">
+        resourcetype = #{record.resourcetype,jdbcType=INTEGER},
+      </if>
+      <if test="record.isdefault != null">
+        isdefault = #{record.isdefault,jdbcType=INTEGER},
+      </if>
+      <if test="record.hasChild != null">
+        hasChild = #{record.hasChild,jdbcType=INTEGER},
+      </if>
+      <if test="record.createdatetime != null">
+        createdatetime = #{record.createdatetime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update sys_resource
+    set id = #{record.id,jdbcType=INTEGER},
+      name = #{record.name,jdbcType=VARCHAR},
+      url = #{record.url,jdbcType=VARCHAR},
+      description = #{record.description,jdbcType=VARCHAR},
+      icon = #{record.icon,jdbcType=VARCHAR},
+      pid = #{record.pid,jdbcType=INTEGER},
+      seq = #{record.seq,jdbcType=INTEGER},
+      state = #{record.state,jdbcType=INTEGER},
+      resourcetype = #{record.resourcetype,jdbcType=INTEGER},
+      isdefault = #{record.isdefault,jdbcType=INTEGER},
+      hasChild = #{record.hasChild,jdbcType=INTEGER},
+      createdatetime = #{record.createdatetime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ctl.sys.manger.po.SysResource">
+    update sys_resource
+    <set>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null">
+        url = #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="icon != null">
+        icon = #{icon,jdbcType=VARCHAR},
+      </if>
+      <if test="pid != null">
+        pid = #{pid,jdbcType=INTEGER},
+      </if>
+      <if test="seq != null">
+        seq = #{seq,jdbcType=INTEGER},
+      </if>
+      <if test="state != null">
+        state = #{state,jdbcType=INTEGER},
+      </if>
+      <if test="resourcetype != null">
+        resourcetype = #{resourcetype,jdbcType=INTEGER},
+      </if>
+      <if test="isdefault != null">
+        isdefault = #{isdefault,jdbcType=INTEGER},
+      </if>
+      <if test="hasChild != null">
+        hasChild = #{hasChild,jdbcType=INTEGER},
+      </if>
+      <if test="createdatetime != null">
+        createdatetime = #{createdatetime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ctl.sys.manger.po.SysResource">
+    update sys_resource
+    set name = #{name,jdbcType=VARCHAR},
+      url = #{url,jdbcType=VARCHAR},
+      description = #{description,jdbcType=VARCHAR},
+      icon = #{icon,jdbcType=VARCHAR},
+      pid = #{pid,jdbcType=INTEGER},
+      seq = #{seq,jdbcType=INTEGER},
+      state = #{state,jdbcType=INTEGER},
+      resourcetype = #{resourcetype,jdbcType=INTEGER},
+      isdefault = #{isdefault,jdbcType=INTEGER},
+      hasChild = #{hasChild,jdbcType=INTEGER},
+      createdatetime = #{createdatetime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
