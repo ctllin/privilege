@@ -441,9 +441,9 @@
     </profile>
     <profile>
       <!-- 发布环境 -->
-      <id>release</id>
+      <id>proc</id>
       <properties>
-        <profiles.active>release</profiles.active>
+        <profiles.active>proc</profiles.active>
       </properties>
     </profile>
     <profile>
