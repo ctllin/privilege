@@ -425,9 +425,39 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <commons.pool2.version>2.5.0</commons.pool2.version>
     <mysql.version>6.0.6</mysql.version><!-- 8.0.8-dmr  6.0.6此版本mybatis无法生成selectByPrimaryKey or deleteByPrimaryKey -->
-
+    <env>dev</env>
   </properties>
+  <profiles>
+    <profile>
+      <!-- 本地开发环境 -->
+      <id>dev</id>
+      <properties>
+        <profiles.active>dev</profiles.active>  <!-- 和application-dev.proterties中的profile.env=dev一致  -->
+      </properties>
+      <activation>
+        <!-- 设置默认激活这个配置 -->
+        <activeByDefault>true</activeByDefault>
+      </activation>
+    </profile>
+    <profile>
+      <!-- 发布环境 -->
+      <id>release</id>
+      <properties>
+        <profiles.active>release</profiles.active>
+      </properties>
+    </profile>
+    <profile>
+      <!-- 测试环境 -->
+      <id>test</id>
+      <properties>
+        <profiles.active>test</profiles.active>
+      </properties>
+    </profile>
+  </profiles>
   <build>
+    <filters>
+      <filter>src/main/resources/config/application-${env}.properties</filter>
+    </filters>
     <finalName>pmanager</finalName>
     <resources>
       <resource><!-- add mybatis mapper to classpath -->
@@ -439,6 +469,7 @@
       </resource>
       <resource>
         <directory>${basedir}/src/main/resources</directory>
+        <filtering>true</filtering>
       </resource>
     </resources>
   </build>
