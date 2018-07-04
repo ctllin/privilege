@@ -435,9 +435,14 @@
         <profiles.active>dev</profiles.active>  <!-- 和application-dev.proterties中的profile.env=dev一致  -->
       </properties>
       <!-- 设置默认激活这个配置 -->
-      <!--<activation>
+      <!--
+      <activation>
         <activeByDefault>true</activeByDefault>
-      </activation>-->
+      </activation>
+      -->
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
     </profile>
     <profile>
       <!-- 发布环境 -->
