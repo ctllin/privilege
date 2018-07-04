@@ -456,7 +456,7 @@
   </profiles>
   <build>
     <filters>
-      <filter>src/main/resources/config/application-${env}.properties</filter>
+      <filter>src/main/resources/config/application-${env}.properties</filter><!-- maven profile动态选择配置文件 -->
     </filters>
     <finalName>pmanager</finalName>
     <resources>
@@ -469,7 +469,7 @@
       </resource>
       <resource>
         <directory>${basedir}/src/main/resources</directory>
-        <filtering>true</filtering>
+        <filtering>true</filtering><!-- maven profile动态选择配置文件 -->
       </resource>
     </resources>
   </build>
