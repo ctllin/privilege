@@ -425,14 +425,13 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <commons.pool2.version>2.5.0</commons.pool2.version>
     <mysql.version>6.0.6</mysql.version><!-- 8.0.8-dmr  6.0.6此版本mybatis无法生成selectByPrimaryKey or deleteByPrimaryKey -->
-    <!--<env>proc</env>--><!-- dev,proc,test -->
   </properties>
   <profiles>
     <profile>
       <!-- 本地开发环境 -->
       <id>dev</id>
       <properties>
-        <profiles.active>dev</profiles.active>  <!-- 和application-dev.proterties中的profile.env=dev一致  -->
+        <profiles.active>dev</profiles.active>  <!-- 和application-dev.proterties中的profile.env=dev一致   mvn compile -P dev & mvn package -P dev -->
       </properties>
       <!-- 设置默认激活这个配置 -->
       <activation>
@@ -443,14 +442,14 @@
       <!-- 发布环境 -->
       <id>proc</id>
       <properties>
-        <profiles.active>proc</profiles.active>
+        <profiles.active>proc</profiles.active>  <!-- 和application-proc.proterties中的profile.env=proc一致   mvn compile -P proc & mvn package -P dev  -->
       </properties>
     </profile>
     <profile>
       <!-- 测试环境 -->
       <id>test</id>
       <properties>
-        <profiles.active>test</profiles.active>
+        <profiles.active>test</profiles.active> <!-- 和application-test.proterties中的profile.env=test一致   mvn compile -P test & mvn package -P dev  -->
       </properties>
     </profile>
   </profiles>
