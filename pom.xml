@@ -425,7 +425,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <commons.pool2.version>2.5.0</commons.pool2.version>
     <mysql.version>6.0.6</mysql.version><!-- 8.0.8-dmr  6.0.6此版本mybatis无法生成selectByPrimaryKey or deleteByPrimaryKey -->
-    <env>dev</env>
+    <!--<env>proc</env>--><!-- dev,proc,test -->
   </properties>
   <profiles>
     <profile>
@@ -435,11 +435,6 @@
         <profiles.active>dev</profiles.active>  <!-- 和application-dev.proterties中的profile.env=dev一致  -->
       </properties>
       <!-- 设置默认激活这个配置 -->
-      <!--
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
-      -->
       <activation>
         <activeByDefault>true</activeByDefault>
       </activation>
@@ -461,7 +456,7 @@
   </profiles>
   <build>
     <filters>
-      <filter>src/main/resources/config/application-${env}.properties</filter><!-- maven profile动态选择配置文件 -->
+      <filter>src/main/resources/config/application-${profiles.active}.properties</filter><!-- maven profile动态选择配置文件 -->
     </filters>
     <finalName>pmanager</finalName>
     <resources>
