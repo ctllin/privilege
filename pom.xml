@@ -429,9 +429,9 @@
   <profiles>
     <profile>
       <!-- 本地开发环境 -->
-      <id>dev</id>
-      <properties>
-        <profiles.active>dev</profiles.active>  <!-- 和application-dev.proterties中的profile.env=dev一致   mvn compile -P dev & mvn package -P dev -->
+      <id>dev</id> <!-- mvn compile -P dev & mvn package -P dev -->
+      <properties> <!-- profiles.activez的值与id值保持一致 -->
+        <profiles.active>dev</profiles.active>  <!--src/main/resources/config/application-${profiles.active}.properties   用此处配置的dev替换,变成application-dev.properteis -->
       </properties>
       <!-- 设置默认激活这个配置 -->
       <activation>
@@ -440,16 +440,16 @@
     </profile>
     <profile>
       <!-- 发布环境 -->
-      <id>proc</id>
-      <properties>
-        <profiles.active>proc</profiles.active>  <!-- 和application-proc.proterties中的profile.env=proc一致   mvn compile -P proc & mvn package -P dev  -->
+      <id>proc</id> <!-- mvn compile -P proc & mvn package -P proc -->
+      <properties> <!-- profiles.activez的值与id值保持一致 -->
+        <profiles.active>proc</profiles.active>  <!--src/main/resources/config/application-${profiles.active}.properties   用此处配置的proc替换,变成application-proc.properteis   -->
       </properties>
     </profile>
     <profile>
       <!-- 测试环境 -->
-      <id>test</id>
-      <properties>
-        <profiles.active>test</profiles.active> <!-- 和application-test.proterties中的profile.env=test一致   mvn compile -P test & mvn package -P dev  -->
+      <id>test</id> <!-- mvn compile -P test & mvn package -P test -->
+      <properties> <!-- profiles.activez的值与id值保持一致 -->
+        <profiles.active>test</profiles.active>   <!--src/main/resources/config/application-${profiles.active}.properties   用此处配置的test替换,变成application-test.properteis   -->
       </properties>
     </profile>
   </profiles>
