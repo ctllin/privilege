@@ -455,7 +455,11 @@
   </profiles>
   <build>
     <filters>
-      <filter>src/main/resources/config/application-${profiles.active}.properties</filter><!-- maven profile动态选择配置文件 -->
+      <filter>src/main/resources/config/application-${profiles.active}.properties</filter>
+      <!--
+       maven profile动态选择配置文件
+       改路径也可以写成<filter>F:/github/manager/common_config/application-${profiles.active}.properties</filter>(非项目路径而是觉对路径)
+      -->
     </filters>
     <finalName>pmanager</finalName>
     <resources>
